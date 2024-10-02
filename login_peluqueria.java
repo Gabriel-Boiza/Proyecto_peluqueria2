@@ -1,34 +1,38 @@
+
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginPage extends JFrame {
 
+    /**
+     * 
+     */
     public LoginPage() {
         // Configuración de la ventana principal
-        setTitle("DREAM'S Perruqueria");
+        setTitle("DREAM'S ");
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 
         // Panel principal con BorderLayout para organizar cabecera y el contenido central
         JPanel panelPrincipal = new JPanel(new BorderLayout());
-        panelPrincipal.setBackground(new Color(240, 235, 230)); // Color de fondo 
+        panelPrincipal.setBackground(new Color(0xEAE5E0)); // Color de fondo 
 
         // ---------- Cabecera (Logo o título) ----------
         JPanel panelCabecera = new JPanel();
         panelCabecera.setLayout(new BoxLayout(panelCabecera, BoxLayout.Y_AXIS)); // Layout para apilar verticalmente
-        panelCabecera.setBackground(new Color(240, 235, 230)); // Mismo color de fondo que la ventana
+        panelCabecera.setBackground(new Color(0xEAE5E0)); // Mismo color de fondo que la ventana
         panelCabecera.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Espaciado arriba y abajo
 
         // Título "DREAM'S"
         JLabel labelTitulo = new JLabel("DREAM'S");
-        labelTitulo.setFont(new Font("Arial", Font.BOLD, 36));
-        labelTitulo.setForeground(Color.DARK_GRAY); // Color gris oscuro
+        labelTitulo.setFont(new Font("Roboto", Font.BOLD, 36));
+        labelTitulo.setForeground(new Color(0x3A3B38)); // Color gris oscuro
         labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Subtítulo "Perruqueria"
         JLabel labelSubTitulo = new JLabel("Perruqueria");
-        labelSubTitulo.setFont(new Font("Arial", Font.PLAIN, 18));
+        labelSubTitulo.setFont(new Font("Roboto", Font.PLAIN, 18));
         labelSubTitulo.setForeground(Color.GRAY); // Color gris para el subtítulo
         labelSubTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -58,7 +62,7 @@ public class LoginPage extends JFrame {
 
         // ---------- Panel para formulario centrado ----------
         JPanel panelFormularioCentrado = new JPanel();
-        panelFormularioCentrado.setBackground(new Color(240, 235, 230)); // Color de fondo
+        panelFormularioCentrado.setBackground(new Color(0xEAE5E0)); // Color de fondo
         panelFormularioCentrado.setLayout(new BoxLayout(panelFormularioCentrado, BoxLayout.Y_AXIS));
 
         // Añadir espacio flexible arriba del formulario para centrar verticalmente
@@ -67,7 +71,7 @@ public class LoginPage extends JFrame {
         // ---------- Contenido del formulario ----------
         JPanel panelFormulario = new JPanel();
         panelFormulario.setLayout(new BoxLayout(panelFormulario, BoxLayout.Y_AXIS));
-        panelFormulario.setBackground(new Color(240, 235, 230)); // Mismo color de fondo
+        panelFormulario.setBackground(new Color(0xEAE5E0)); // Mismo color de fondo
 
         // Campos de texto para usuario y contraseña
         JTextField campoUsuario = new JTextField();
