@@ -12,7 +12,7 @@ public class LoginPage extends JFrame {
 
         // Panel principal con BorderLayout para organizar cabecera y el contenido central
         JPanel panelPrincipal = new JPanel(new BorderLayout());
-        panelPrincipal.setBackground(new Color(240, 235, 230)); // Color de fondo similar al de la imagen
+        panelPrincipal.setBackground(new Color(240, 235, 230)); // Color de fondo 
 
         // ---------- Cabecera (Logo o título) ----------
         JPanel panelCabecera = new JPanel();
