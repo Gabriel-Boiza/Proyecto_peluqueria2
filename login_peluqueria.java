@@ -87,7 +87,7 @@ public class LoginPage extends JFrame {
         // Botón de Entrar
         JButton botonEntrar = new JButton("ENTRAR");
         botonEntrar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        botonEntrar.setBackground(Color.DARK_GRAY);
+        botonEntrar.setBackground(new Color(0x3A3B38));
         botonEntrar.setForeground(Color.WHITE);
         botonEntrar.setMaximumSize(new Dimension(100, 40)); // Ancho fijo
 
