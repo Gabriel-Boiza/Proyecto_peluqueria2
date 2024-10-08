@@ -1,161 +1,143 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor; 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt; // Importar BCrypt
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+public class LoginPage extends Application {
 
-public class LoginPage extends JFrame {
+    // Simulamos una contraseña hasheada (en un sistema real, esto vendría de la base de datos)
+    private static final String hashedPasswordAlmacenada = BCrypt.hashpw("mi_contraseña_secreta", BCrypt.gensalt());
 
-    public LoginPage() {
-        // Configuración de la ventana principal
-        setTitle("DREAM'S Perruqueria");
-        setSize(600, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Centrar la ventana en la pantalla
+    @Override
+    public void start(Stage primaryStage) {
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: #E9E5E0;");
 
-        // Panel principal con BorderLayout para organizar cabecera y el contenido central
-        JPanel panelPrincipal = new JPanel(new BorderLayout());
-        panelPrincipal.setBackground(new Color(0xE9E5E0)); // Color de fondo similar al de la imagen
+        // Cabecera (Header)
+        StackPane header = new StackPane();
+        header.setPadding(new Insets(20, 0, 20, 0));
 
-        // ---------- Cabecera (Logo o título) ----------
-        JPanel panelCabecera = new JPanel();
-        panelCabecera.setLayout(new BoxLayout(panelCabecera, BoxLayout.Y_AXIS)); // Layout para apilar verticalmente
-        panelCabecera.setBackground(new Color(0xE9E5E0)); // Mismo color de fondo que la ventana
-        panelCabecera.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Espaciado arriba y abajo
+        // Sombra simulada (Texto detrás con desplazamiento)
+        Label sombraTitulo = new Label("DREAM'S");
+        sombraTitulo.setFont(Font.font("Arial", FontWeight.BOLD, 46));  // Fuente grande
+        sombraTitulo.setTextFill(Color.web("#C0C0C0"));  // Color gris claro para la sombra
+        sombraTitulo.setTranslateX(-5);  // Desplazamos un poco hacia la derecha
+        sombraTitulo.setTranslateY(3);  // Desplazamos un poco hacia abajo
 
-        // Título "DREAM'S"
-        JLabel labelTitulo = new JLabel("DREAM'S");
-        labelTitulo.setFont(new Font("Arial", Font.BOLD, 56));
-        labelTitulo.setForeground(Color.DARK_GRAY); // Color gris oscuro
-        labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Texto principal de "DREAM'S"
+        Label titulo = new Label("DREAM'S");
+        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 46));  // Fuente grande
+        titulo.setTextFill(Color.web("#383D37"));  // Color principal
 
-        // Subtítulo "Perruqueria"
-        JLabel labelSubTitulo = new JLabel("Perruqueria");
-        labelSubTitulo.setFont(new Font("Arial", Font.PLAIN, 18));
-        labelSubTitulo.setForeground(Color.GRAY); // Color gris para el subtítulo
-        labelSubTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Creamos un StackPane para superponer la sombra y el texto principal
+        StackPane tituloConSombra = new StackPane();
+        tituloConSombra.getChildren().addAll(sombraTitulo, titulo);  // Superponer texto y sombra
+        tituloConSombra.setAlignment(Pos.CENTER);  // Alinearlos juntos
 
-        // Añadir título y subtítulo al panel de cabecera
-        panelCabecera.add(labelTitulo);
-        panelCabecera.add(labelSubTitulo);
+        // Crear subtítulo con líneas a los lados
+        Label subtitulo = new Label("Perruqueria");
+        subtitulo.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        subtitulo.setTextFill(Color.web("#383D37"));
 
-        // ---------- Línea divisoria blanca ----------
-        JPanel separadorPersonalizado = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(Color.WHITE); // Color blanco para la línea
-                g.fillRect(0, 0, getWidth(), getHeight()); // Pintar toda el área del JPanel
-            }
-        };
-        separadorPersonalizado.setPreferredSize(new Dimension(500, 4)); // Ancho de la ventana, y grosor de la línea (4 píxeles)
-        separadorPersonalizado.setMaximumSize(new Dimension(Integer.MAX_VALUE, 4)); // Para que ocupe todo el ancho
-        separadorPersonalizado.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Rectangle lineaIzquierda = new Rectangle(65, 2, Color.BLACK);
+        Rectangle lineaDerecha = new Rectangle(65, 2, Color.BLACK);
 
-        // Añadir cabecera y línea divisoria al panel de cabecera
-        panelCabecera.add(Box.createRigidArea(new Dimension(0, 10))); // Espacio entre el subtítulo y la línea
-        panelCabecera.add(separadorPersonalizado);
+        HBox subtituloConLineas = new HBox(0);  // Contenedor horizontal para subtítulo y líneas
+        subtituloConLineas.setAlignment(Pos.CENTER);
+        subtituloConLineas.getChildren().addAll(lineaIzquierda, subtitulo, lineaDerecha);
 
-        // Añadir cabecera al panel principal en la parte superior
-        panelPrincipal.add(panelCabecera, BorderLayout.NORTH);
+        VBox headerContent = new VBox(0);  // Contenedor vertical para título y subtítulo
+        headerContent.getChildren().addAll(tituloConSombra, subtituloConLineas);
+        headerContent.setAlignment(Pos.CENTER);
 
-        // ---------- Panel para formulario centrado ----------
-        JPanel panelFormularioCentrado = new JPanel();
-        panelFormularioCentrado.setBackground(new Color(0xE9E5E0)); // Color de fondo
-        panelFormularioCentrado.setLayout(new BoxLayout(panelFormularioCentrado, BoxLayout.Y_AXIS));
+        header.getChildren().add(headerContent);
 
-        // Añadir espacio flexible arriba del formulario para centrar verticalmente
-        panelFormularioCentrado.add(Box.createVerticalGlue());
+        // Línea divisoria
+        Rectangle separator = new Rectangle(1800, 4);  // Línea blanca debajo del encabezado
+        separator.setFill(Color.WHITE);
+        StackPane.setMargin(separator, new Insets(100, 0, 0, 0));
+        header.getChildren().add(separator);
 
-        // ---------- Contenido del formulario ----------
-        JPanel panelFormulario = new JPanel();
-        panelFormulario.setLayout(new BoxLayout(panelFormulario, BoxLayout.Y_AXIS));
-        panelFormulario.setBackground(new Color(0xE9E5E0)); // Mismo color de fondo
+        // Formulario de inicio de sesión
+        VBox formulario = new VBox(20);  // Espaciado entre los elementos del formulario
+        formulario.setAlignment(Pos.CENTER);
 
-        // Campos de texto para usuario y contraseña con títulos
-        JTextField campoUsuario = new JTextField();
-        campoUsuario.setMaximumSize(new Dimension(300, 40));  // Ancho fijo
-        campoUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
-        campoUsuario.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 0), "USUARIO"));
+        TextField campoUsuario = new TextField();
+        campoUsuario.setPromptText("USUARIO");
+        campoUsuario.setMaxWidth(300);
 
-        JPasswordField campoContrasena = new JPasswordField();
-        campoContrasena.setMaximumSize(new Dimension(300, 40));  // Ancho fijo
-        campoContrasena.setAlignmentX(Component.CENTER_ALIGNMENT);
-        campoContrasena.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY, 0), "CONTRASEÑA"));
+        PasswordField campoContrasena = new PasswordField();
+        campoContrasena.setPromptText("CONTRASEÑA");
+        campoContrasena.setMaxWidth(300);
 
-        // Botón de Entrar
-        JButton botonEntrar = new JButton("ENTRAR");
-        botonEntrar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        botonEntrar.setBackground(Color.DARK_GRAY);
-        botonEntrar.setForeground(Color.WHITE);
-        botonEntrar.setMaximumSize(new Dimension(100, 40)); // Ancho fijo
+        Button botonEntrar = new Button("ENTRAR");
+        botonEntrar.setStyle("-fx-background-color: #383D37; -fx-text-fill: white;");
+        botonEntrar.setMaxWidth(100);
 
-        // Etiqueta de "Recuperar contraseña"
-        JLabel labelRecuperarContrasena = new JLabel("¿Olvidaste tu contraseña?");
-        labelRecuperarContrasena.setFont(new Font("Arial", Font.PLAIN, 12));
-        labelRecuperarContrasena.setForeground(Color.BLUE); // Color azul, similar a un enlace
-        labelRecuperarContrasena.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia el cursor al pasar sobre el texto
-        labelRecuperarContrasena.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Acción al hacer clic en el botón "ENTRAR"
+        botonEntrar.setOnAction(event -> {
+            String usuarioIngresado = campoUsuario.getText();
+            String contrasenaIngresada = campoContrasena.getText();
 
-        // Añadir efecto de "enlace" al pasar el ratón
-        labelRecuperarContrasena.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Acción al hacer clic en "Recuperar contraseña"
-                JOptionPane.showMessageDialog(null, "Se ha solicitado la recuperación de contraseña.");
-            }
-
-           
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                labelRecuperarContrasena.setText("¿Olvidaste tu contraseña?"); // Quitar el subrayado
+            if (!usuarioIngresado.isEmpty() && !contrasenaIngresada.isEmpty()) {
+                // Verificar la contraseña ingresada
+                if (BCrypt.checkpw(contrasenaIngresada, hashedPasswordAlmacenada)) {
+                    // Contraseña correcta, cambiar a la siguiente página
+                    cambiarAPaginaSiguiente(primaryStage);
+                } else {
+                    // Contraseña incorrecta
+                    System.out.println("Contraseña incorrecta.");
+                }
+            } else {
+                System.out.println("El usuario o la contraseña no pueden estar vacíos.");
             }
         });
 
-        // Añadir componentes al formulario
-        panelFormulario.add(campoUsuario);
-        panelFormulario.add(Box.createRigidArea(new Dimension(0, 20))); // Espacio entre los campos
-        panelFormulario.add(campoContrasena);
-        panelFormulario.add(Box.createRigidArea(new Dimension(0, 20))); // Espacio entre contraseña y botón
-        panelFormulario.add(botonEntrar);
-        panelFormulario.add(Box.createRigidArea(new Dimension(0, 10))); // Espacio entre el botón y la etiqueta de "Recuperar contraseña"
-        panelFormulario.add(labelRecuperarContrasena);
+        Label labelRecuperarContrasena = new Label("¿Olvidaste tu contraseña?");
+        labelRecuperarContrasena.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+        labelRecuperarContrasena.setTextFill(Color.BLUE);
+        labelRecuperarContrasena.setOnMouseClicked(event -> {
+            System.out.println("Se ha solicitado la recuperación de contraseña.");
+        });
 
-        // Añadir el formulario centrado al panel de formulario centrado
-        panelFormularioCentrado.add(panelFormulario);
+        formulario.getChildren().addAll(campoUsuario, campoContrasena, botonEntrar, labelRecuperarContrasena);
 
-        // Añadir espacio flexible debajo del formulario para centrar verticalmente
-        panelFormularioCentrado.add(Box.createVerticalGlue());
+        // Contenido del panel
+        StackPane content = new StackPane();
+        content.getChildren().add(formulario);
+        content.setAlignment(Pos.CENTER);
 
-        // Añadir el panel centrado al panel principal
-        panelPrincipal.add(panelFormularioCentrado, BorderLayout.CENTER);
+        root.setTop(header);
+        root.setCenter(content);
 
-        // Añadir el panel principal a la ventana
-        add(panelPrincipal);
+        Scene scene = new Scene(root, 600, 500);
+        primaryStage.setTitle("DREAM'S Perruqueria");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-        // Hacer la ventana visible
-        setVisible(true);
+    // Método para cambiar a la nueva página
+    public void cambiarAPaginaSiguiente(Stage stage) {
+        // Implementa la lógica para cambiar a la nueva página aquí
+        System.out.println("Accediendo a la siguiente página...");
+        // Puedes abrir una nueva ventana o cambiar la escena
     }
 
     public static void main(String[] args) {
-        // Ejecutar la aplicación en el hilo de eventos de Swing
-        SwingUtilities.invokeLater(LoginPage::new);
+        launch(args);
     }
 }
